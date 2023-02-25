@@ -1,6 +1,14 @@
 import Task from "./Task";
 
-const Tasks = ({ tasks, onDelete, onToggle }) => {
+const Tasks = ({
+  onIsOpen,
+  onClose,
+  task,
+  onDelete,
+  onToggle,
+  onOpen,
+  tasks,
+}) => {
   return (
     <>
       {tasks.map((task) => {
@@ -8,8 +16,13 @@ const Tasks = ({ tasks, onDelete, onToggle }) => {
           <Task
             key={task._id}
             task={task}
-            onDelete={onDelete}
+            tasks={tasks}
+            onOpen={onOpen}
             onToggle={onToggle}
+            onDelete={onDelete}
+            onIsOpen={onIsOpen}
+            onClose={onClose}
+            
           />
         );
       })}

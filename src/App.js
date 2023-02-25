@@ -6,12 +6,24 @@ import Footer from "./components/Footer";
 import Tasks from "./components/Tasks";
 import AddTask from "./components/AddTask";
 import taskFinder from "./apis/taskFinder";
-import {Circles} from "react-loader-spinner";
+import { Circles } from "react-loader-spinner";
+
 
 function App() {
   const [isLoading, setIsLodding] = useState(false);
   const [showAddTask, setShowAddTask] = useState(false);
   const [tasks, setTasks] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Open Modal
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  // colseModal
+  const closeModal = () => {
+    setIsOpen(false);
+  };
 
   // Loads Tasks on page loads
   useEffect(() => {
@@ -34,20 +46,14 @@ function App() {
       alert(error);
     }
   };
+
   // Add Task
 
   const addTask = async (task) => {
-    console.log({ ...task });
     const { text, day, reminder } = task;
     const response = await taskFinder.post("/", { text, day, reminder });
     const data = await response.data.data;
     setTasks([...tasks, data]);
-    alert(response.data.message);
-  };
-  // DELETE TASK
-  const deleteTask = async (id) => {
-    const response = await taskFinder.delete(`/${id}`);
-    setTasks(tasks.filter((task) => task._id !== id));
     alert(response.data.message);
   };
 
@@ -61,20 +67,26 @@ function App() {
       alert(error);
     }
   };
+  // // DELETE TASK
+  const deleteTask = async (id) => {
+    await taskFinder.delete(`/${id}`);
+    setTasks(tasks.filter((task) => task._id !== id));
+    closeModal();
+  };
+
   //Toggle Reminder
 
   const toggleReminder = async (id) => {
     const taskToToggle = await fetchTask(id);
     const updatedTask = { ...taskToToggle, reminder: !taskToToggle.reminder };
-
-    await taskFinder.put(`/${id}`, {
-      reminder: updatedTask.reminder,
-    });
     setTasks(
       tasks.map((task) =>
         task._id === id ? { ...task, reminder: !task.reminder } : task
       )
     );
+    await taskFinder.put(`/${id}`, {
+      reminder: updatedTask.reminder,
+    });
   };
   return (
     <Router>
@@ -101,11 +113,25 @@ function App() {
                 <>
                   {showAddTask && <AddTask onAdd={addTask} />}
                   {tasks.length > 0 ? (
-                    <Tasks
-                      tasks={tasks}
-                      onDelete={deleteTask}
-                      onToggle={toggleReminder}
-                    />
+                    <div className="scroll">
+                      <h6
+                        style={{
+                          color: "red",
+                          paddingLeft: "5px",
+                          marginTop: "20px",
+                        }}
+                      >
+                        <i>Double click on a task to toggle its reminder</i>
+                      </h6>
+                      <Tasks
+                        tasks={tasks}
+                        onDelete={deleteTask}
+                        onIsOpen={isOpen}
+                        onToggle={toggleReminder}
+                        onClose={closeModal}
+                        onOpen={openModal}
+                      />
+                    </div>
                   ) : (
                     <p>No Tasks to Show</p>
                   )}

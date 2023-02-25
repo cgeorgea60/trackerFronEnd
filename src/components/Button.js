@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 
-const Button = ({ color, text, onClick }) => {
+const Button = ({ bgcolor, text, onClick }) => {
   return (
     <button
       className="btn"
-      style={{ backgroundColor: color }}
+      style={{ backgroundColor: bgcolor }}
       onClick={onClick}
     >
       {text}
@@ -18,7 +18,7 @@ Button.defaultProps = {
 
 Button.propTypes = {
   text: PropTypes.string,
-  color: PropTypes.string,
+  bgcolor: PropTypes.string,
   onClick: PropTypes.func,
 };
 
