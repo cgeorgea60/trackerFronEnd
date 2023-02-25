@@ -19,17 +19,11 @@ const Modal = ({ task, onClose, onIsOpen, onDelete }) => {
             }}
           >
             <Button
-              className="close"
               bgcolor="darkred"
               text="Confirm"
               onClick={() => onDelete(task._id)}
             />
-            <Button
-              className="close"
-              bgcolor="gray"
-              text="Cancel"
-              onClick={() => onClose()}
-            />
+            <Button bgcolor="gray" text="Cancel" onClick={() => onClose()} />
           </div>
         </div>
       )}

@@ -1,8 +1,6 @@
 import axios from "axios";
-
+require("dotenv").config();
 export default axios.create({
-  baseURL: "https://tasktracker-api.up.railway.app/api/tasks",
- // baseURL: "http://localhost:5000/api/tasks",
+  baseURL: process.env.baseURL,
+  //baseURL: "http://localhost:5000/api/tasks",
 });
-
-

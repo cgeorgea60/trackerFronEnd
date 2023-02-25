@@ -54,7 +54,6 @@ function App() {
     const response = await taskFinder.post("/", { text, day, reminder });
     const data = await response.data.data;
     setTasks([...tasks, data]);
-    alert(response.data.message);
   };
 
   //Fetch a Task
